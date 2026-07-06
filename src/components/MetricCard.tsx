@@ -9,48 +9,42 @@ interface MetricCardProps {
   trendDirection?: "up" | "down" | "neutral";
   icon: React.ReactNode;
   color: "cyan" | "purple" | "emerald" | "amber" | "rose" | "indigo";
+  loading?: boolean;
 }
 
-export default function MetricCard({ title, value, unit, trend, trendDirection, icon, color }: MetricCardProps) {
-  const borderColors = {
-    cyan: "border-cyan-500/20 hover:border-cyan-500/40 focus-within:border-cyan-500/40",
-    purple: "border-purple-500/20 hover:border-purple-500/40 focus-within:border-purple-500/40",
-    emerald: "border-emerald-500/20 hover:border-emerald-500/40 focus-within:border-emerald-500/40",
-    amber: "border-amber-500/20 hover:border-amber-500/40 focus-within:border-amber-500/40",
-    rose: "border-rose-500/20 hover:border-rose-500/40 focus-within:border-rose-500/40",
-    indigo: "border-indigo-500/20 hover:border-indigo-500/40 focus-within:border-indigo-500/40",
+export default function MetricCard({ title, value, unit, trend, trendDirection, icon, color, loading = false }: MetricCardProps) {
+  const accentColors = {
+    cyan: "text-blue-400 bg-blue-500/10 border-blue-500/20",     // Map to Google Blue
+    purple: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+    emerald: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", // Map to Google Green
+    amber: "text-amber-400 bg-amber-500/10 border-amber-500/20",     // Map to Google Yellow
+    rose: "text-rose-400 bg-rose-500/10 border-rose-500/20",       // Map to Google Red
+    indigo: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
   };
 
-  const bgGradients = {
-    cyan: "from-cyan-500/5 to-transparent",
-    purple: "from-purple-500/5 to-transparent",
-    emerald: "from-emerald-500/5 to-transparent",
-    amber: "from-amber-500/5 to-transparent",
-    rose: "from-rose-500/5 to-transparent",
-    indigo: "from-indigo-500/5 to-transparent",
-  };
-
-  const iconColors = {
-    cyan: "text-cyan-400 bg-cyan-500/10",
-    purple: "text-purple-400 bg-purple-500/10",
-    emerald: "text-emerald-400 bg-emerald-500/10",
-    amber: "text-amber-400 bg-amber-500/10",
-    rose: "text-rose-400 bg-rose-500/10",
-    indigo: "text-indigo-400 bg-indigo-500/10",
-  };
+  if (loading) {
+    return (
+      <div className="p-5 rounded-2xl gcp-glass animate-pulse">
+        <div className="flex justify-between items-start mb-4">
+          <div className="h-3 w-20 bg-white/10 rounded" />
+          <div className="h-8 w-8 bg-white/10 rounded-xl" />
+        </div>
+        <div className="h-6 w-24 bg-white/15 rounded mb-2" />
+        <div className="h-3 w-16 bg-white/10 rounded" />
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={`relative p-5 rounded-2xl border bg-slate-950/40 backdrop-blur-md bg-gradient-to-br ${bgGradients[color]} ${borderColors[color]} transition-all duration-300 shadow-xl overflow-hidden group`}
-    >
-      {/* Abstract Background Ring */}
-      <div className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-current opacity-[0.02] group-hover:opacity-[0.04] transition-all" />
-
+    <div className="relative p-5 rounded-2xl gcp-glass gcp-glass-hover overflow-hidden group">
+      {/* Subtle Gradient Glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+      
       <div className="flex justify-between items-start mb-3">
         <span className="text-[11px] font-mono font-bold tracking-wider text-slate-400 group-hover:text-slate-300 uppercase transition-colors">
           {title}
         </span>
-        <div className={`p-2 rounded-xl transition-transform duration-300 group-hover:scale-105 ${iconColors[color]}`}>
+        <div className={`p-2.5 rounded-xl transition-transform duration-300 group-hover:scale-105 ${accentColors[color]}`}>
           {icon}
         </div>
       </div>

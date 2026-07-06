@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node -e \"if(process.env.USE_PYTHON_BACKEND === 'true') { require('child_process').execSync('npx concurrently \\\"vite\\\" \\\"uvicorn main:app --reload\\\"', {stdio: 'inherit'}); } else { require('child_process').execSync('tsx server.ts', {stdio: 'inherit'}); }\"",
+    "dev": "node -e \"if(process.env.USE_PYTHON_BACKEND === 'true') { require('child_process').execSync('npx concurrently \\\"vite\\\" \\\"uvicorn backend.app.main:app --reload\\\"', {stdio: 'inherit'}); } else { require('child_process').execSync('tsx server.ts', {stdio: 'inherit'}); }\"",
     "dev:local": "vite",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^8.3.1",
@@ -21,6 +22,7 @@
     "@google-cloud/storage": "^7.21.0",
     "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.1.14",
+    "@tanstack/react-query": "^5.101.2",
     "@vitejs/plugin-react": "^5.0.4",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
@@ -30,12 +32,17 @@
     "react-dom": "^19.0.1",
     "recharts": "^3.9.2",
     "vite": "^6.2.3",
-    "ws": "^8.21.0"
+    "ws": "^8.21.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "@types/ws": "^8.18.1",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^10.0.3",
     "esbuild": "^0.25.0",

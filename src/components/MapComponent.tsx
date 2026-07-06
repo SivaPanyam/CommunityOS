@@ -46,12 +46,12 @@ export default function MapComponent({ traffic, emergencies, aqiList, water, onS
   };
 
   return (
-    <div className="relative w-full h-[410px] bg-slate-950/80 rounded-2xl border border-slate-800/80 overflow-hidden shadow-2xl backdrop-blur-xl">
+    <div className="relative w-full h-[410px] rounded-2xl gcp-glass overflow-hidden shadow-2xl">
       {/* Map Header Controls */}
       <div className="absolute top-3 left-3 right-3 z-10 space-y-2">
-        <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-xl border border-slate-800 backdrop-blur-md">
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-900/40 p-2 rounded-xl border border-white/5 backdrop-blur-md">
           <span className="text-xs font-mono font-medium text-slate-300 flex items-center gap-1.5 pl-1.5">
-            <Activity className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <Activity className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
             COMMUNITYOS COGNITIVE DIGITAL TWIN
           </span>
           <div className="flex gap-1 flex-wrap">
@@ -476,7 +476,7 @@ export default function MapComponent({ traffic, emergencies, aqiList, water, onS
 
       {/* Floating Info card panel */}
       {selectedPoi && (
-        <div className="absolute bottom-4 left-4 right-4 bg-slate-900/95 p-3 rounded-xl border border-slate-800/80 shadow-2xl backdrop-blur-lg flex justify-between items-start gap-3 transition-all">
+        <div className="absolute bottom-4 left-4 right-4 gcp-glass p-3 rounded-xl border border-white/10 shadow-2xl flex justify-between items-start gap-3 transition-all">
           <div className="flex-1">
             <div className="flex items-center gap-1.5 mb-1">
               {selectedPoi.type === "traffic" && <Navigation className="w-4 h-4 text-emerald-400 rotate-90" />}

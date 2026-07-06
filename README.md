@@ -1,126 +1,273 @@
-# CommunityOS - AI-Powered Decision Intelligence Platform
+<div align="center">
 
-CommunityOS is an advanced, production-grade AI-powered Decision Intelligence Platform (AI-OS) designed to aggregate multi-source urban telemetry, predict upcoming crises, optimize resource dispatch logistics, triage citizen complaints with live LLM classification, and guide city administrators through critical situations with a multi-agent reasoning consensus.
+# 🏙️ CommunityOS
+### AI-Powered Smart City Operating System
 
----
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Cloud%20Run-blue?logo=google-cloud)](https://smart-city-os-223349418431.us-central1.run.app)
+[![Built with Gemini](https://img.shields.io/badge/Built%20with-Gemini%20AI-orange?logo=google)](https://ai.google.dev/)
+[![Deployed on GCP](https://img.shields.io/badge/Deployed%20on-Google%20Cloud-4285F4?logo=google-cloud)](https://cloud.google.com/)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-61DAFB?logo=react)](https://react.dev/)
 
-## 🚀 Key Capabilities & Core Architecture
+**CommunityOS** is a production-grade, AI-powered Smart City Operating System that unifies multi-source urban telemetry, predictive crisis detection, automated workflow dispatch, and Gemini AI-powered decision intelligence — all in a single real-time platform.
 
-CommunityOS integrates modern full-stack development with multimodal AI engineering and real-time WebSocket communication:
+🌐 **[Try it Live →](https://smart-city-os-223349418431.us-central1.run.app)**
 
-1. **Master AI Coordinator & Multi-Agent Consensus**:
-   - Built on the official `@google/genai` (Node.js) and `google-genai` (Python) SDKs.
-   - Coordinates six specialized domain agents (**Traffic, Environment, Citizen, Healthcare, Emergency, and Resource Agents**) using RAG (Retrieval-Augmented Generation) coupled with real-time telemetry state context.
-   - Outputs highly structured JSON matching strict schemas for direct workflow action execution.
-
-2. **Real-Time WebSocket Synchronization Pipeline**:
-   - Integrates live WebSocket connections directly over the standard HTTP port 3000 (compliant with strict sandbox/ingress routing).
-   - Simulates continuous city fluctuations (water reservoir levels, traffic congestion indexes, air quality variations) and broadcasts them to all connected clients every 10 seconds.
-   - Triggers instantaneous frontend state updates for user dispatches and citizen complaints without page reloads.
-
-3. **Knowledge Grounding / RAG (Retrieval-Augmented Generation)**:
-   - Queries a localized database of Municipal Standard Operating Procedures (SOPs) on *Urban Mobility Policy* and *Disaster Response SOPs*.
-   - Evaluates the query using a highly optimized relevance filter and injects raw SOP guidelines into the Gemini prompt structure to enforce compliant municipal responses.
-
-4. **Dual-Stack Portability**:
-   - Fully compatible with both a unified **Node.js/Express + Vite** runtime (the default cloud container environment) and a **Python FastAPI** backend framework.
+</div>
 
 ---
 
-## 📁 Clean Directory Layout
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| 🧠 **Multi-Agent AI** | 6 specialized Gemini AI agents (Traffic, Environment, Citizen, Healthcare, Emergency, Resource) with consensus reasoning |
+| 📡 **Real-Time WebSockets** | Live city telemetry broadcast every 10 seconds — water, power, air quality, traffic |
+| 🗺️ **Interactive Maps** | Live incident heatmaps and resource tracking |
+| ⚡ **Workflow Automation** | AI-triggered workflows for Emergency Response, Flood Alerts, Traffic, Garbage, Power Failures |
+| 📊 **Analytics Dashboard** | City metrics, trend visualization, risk indicators |
+| 🔍 **RAG-Powered SOPs** | AI grounded in Municipal Standard Operating Procedures |
+| 🎫 **Citizen Complaints** | Intake, auto-classification, and department routing |
+| 🚨 **Emergency Management** | Live alerts, dispatcher, severity scoring |
+| 🔒 **Audit Logs** | Full workflow execution history and compliance tracking |
+| 🌙 **Dark Mode UI** | Material Design 3 + Glassmorphism premium design |
+
+---
+
+## 🏗️ Architecture
 
 ```
-├── backend/                  # Python FastAPI Backend Services
-│   ├── main.py               # FastAPI App (CORS, REST routes, RAG, WebSockets)
-│   └── requirements.txt      # Python dependencies (google-genai, fastapi, uvicorn)
-├── src/                      # Frontend React + TypeScript application
-│   ├── components/           # Modular visual components and views
-│   │   ├── DashboardView.tsx # Master real-time municipal control center
-│   │   ├── DecisionCenterView.tsx # Multi-agent AI Reasoning room
-│   │   ├── AnalyticsView.tsx # Trend visualizers (d3 / Recharts)
-│   │   ├── ComplaintsView.tsx # Citizen claims intake and auto-routing
-│   │   ├── EmergencyView.tsx # Live hazard alerts and dispatcher
-│   │   ├── UtilitiesView.tsx # Water reservoirs and smart grid meters
-│   │   └── SettingsView.tsx  # Visual styling theme selectors
-│   ├── data/                 # Platform data layers
-│   │   ├── mock/             # Mock CSV datasets (traffic, weather, water, power, etc.)
-│   │   └── rag/              # SOP Markdown files for Retrieval-Augmented Generation
-│   ├── types.ts              # Global typed data schemas and interfaces
-│   ├── App.tsx               # Primary React entry state and WS reconnecting client
-│   └── main.tsx              # React DOM mounting
-├── .env.example              # Sample environment configurations
-├── Dockerfile                # Multi-stage production container build schema
-├── package.json              # Frontend & backend Node scripts and dependencies
-├── server.ts                 # Production-grade Node Express + Vite unified server
-├── tsconfig.json             # TypeScript compiler settings
-└── vite.config.ts            # Vite asset bundler configuration
+┌─────────────────────────────────────────────────────────────┐
+│                    Google Cloud Run                          │
+│                                                              │
+│  ┌────────────────┐    ┌──────────────────────────────────┐ │
+│  │  React + Vite  │    │        FastAPI Backend            │ │
+│  │  (TypeScript)  │◄──►│  • Gemini AI (Vertex AI)         │ │
+│  │  • Dashboard   │    │  • Multi-Agent System            │ │
+│  │  • Map/Charts  │    │  • RAG (SOP Knowledge Base)      │ │
+│  │  • Workflows   │    │  • WebSocket Server              │ │
+│  │  • Complaints  │    │  • Workflow Automation Engine    │ │
+│  └────────────────┘    └────────────┬─────────────────────┘ │
+└────────────────────────────────────│────────────────────────┘
+                                     │
+            ┌────────────────────────┼────────────────────────┐
+            ▼                        ▼                        ▼
+    ┌───────────────┐   ┌──────────────────┐   ┌────────────────────┐
+    │   Firestore   │   │    BigQuery       │   │  Cloud Storage     │
+    │  (Complaints, │   │  (Analytics,      │   │  (RAG Documents,   │
+    │   Workflows)  │   │   Audit Logs)     │   │   Uploads)         │
+    └───────────────┘   └──────────────────┘   └────────────────────┘
 ```
 
 ---
 
-## 🛠️ Local Setup & Execution
+## 🚀 Quick Start (Local)
 
-### Option A: Unified Node.js / Express Backend (Default)
+### Prerequisites
+- Node.js 20+
+- Python 3.10+
+- A [Google AI Studio](https://aistudio.google.com/) API key (free)
 
-The default environment serves both the React client (utilizing hot development middleware) and the API/WebSocket routes from a single port (`3000`).
+### 1. Clone & Install
 
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+```bash
+git clone https://github.com/SivaPanyam/CommunityOS.git
+cd CommunityOS
 
-2. **Run Development Server**:
-   ```bash
-   npm run dev
-   ```
-   *Serves the complete React client and API endpoints on `http://localhost:3000` with active WebSocket telemetry.*
+# Install frontend dependencies
+npm install
 
-3. **Production Build & Launch**:
-   ```bash
-   npm run build
-   ```
-   This compiles the React assets to `dist/` and bundles the Express server to a CJS self-contained output `dist/server.cjs` using `esbuild` for maximum container cold-start performance.
+# Install backend dependencies
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
-   ```bash
-   npm run start
-   ```
+### 2. Configure Environment
 
----
+```bash
+cp .env.example .env
+```
 
-### Option B: Python FastAPI Backend
-
-Alternatively, you can run the backend service via FastAPI/Uvicorn, proxying frontend requests.
-
-1. **Setup Python Virtual Environment**:
-   ```bash
-   cd backend
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-
-2. **Run FastAPI Server**:
-   ```bash
-   uvicorn main:app --reload --port 8000
-   ```
-   *Launches the backend API and WebSockets server on `http://localhost:8000`.*
-
-3. **Run Frontend Client**:
-   Return to the root folder, and run:
-   ```bash
-   npm run dev
-   ```
-   *(Ensure Vite's dev server is running on port `3000` and proxying API/WS requests accordingly, or build assets to let FastAPI serve the `/dist` path directly).*
-
----
-
-## 🛡️ Environment Variables
-
-Copy `.env.example` to `.env` and fill in your Gemini API Key:
-
+Edit `.env` and add your Gemini API key:
 ```env
-# Get a free key from Google AI Studio
-GEMINI_API_KEY="AIzaSy..."
+GEMINI_API_KEY=your_api_key_here
+GOOGLE_CLOUD_PROJECT=your_gcp_project_id
 ```
 
-*Note: In the Google AI Studio container, the key is automatically injected. You do not need to construct a custom `.env` file manually.*
+### 3. Run Development
+
+**Option A — Frontend only (mock data):**
+```bash
+npm run dev
+# App available at http://localhost:5173
+```
+
+**Option B — Full stack (FastAPI + React):**
+
+Terminal 1 (backend):
+```bash
+uvicorn backend.app.main:app --reload --port 8080
+```
+
+Terminal 2 (frontend):
+```bash
+npm run dev
+# App available at http://localhost:5173
+```
+
+---
+
+## 🌩️ Google Cloud Deployment
+
+### Prerequisites
+- [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installed and authenticated
+- A GCP project with billing enabled
+
+### Deploy to Cloud Run
+
+```bash
+# Build the frontend locally
+npm run build
+
+# Submit to Cloud Build and deploy to Cloud Run
+gcloud builds submit --config=cloudbuild.yaml
+```
+
+The `cloudbuild.yaml` will:
+1. Build the Docker image with your pre-compiled `dist/` frontend
+2. Push to Artifact Registry (`us-central1`)
+3. Deploy to Cloud Run with auto-scaling (0–10 instances)
+
+### Enable Required APIs
+
+```bash
+gcloud services enable \
+  run.googleapis.com \
+  cloudbuild.googleapis.com \
+  artifactregistry.googleapis.com \
+  firestore.googleapis.com \
+  bigquery.googleapis.com \
+  storage.googleapis.com \
+  secretmanager.googleapis.com \
+  pubsub.googleapis.com \
+  aiplatform.googleapis.com
+```
+
+---
+
+## 📁 Project Structure
+
+```
+CommunityOS/
+├── backend/                    # Python FastAPI backend
+│   └── app/
+│       ├── main.py             # FastAPI app entry point
+│       ├── agents/             # AI agent implementations
+│       ├── routes/             # API route handlers
+│       ├── services/           # Google Cloud service integrations
+│       └── workflows/          # Workflow automation engine
+├── src/                        # React TypeScript frontend
+│   ├── components/             # UI components and views
+│   │   ├── DashboardView.tsx   # Main city overview
+│   │   ├── DecisionCenterView.tsx # AI multi-agent reasoning
+│   │   ├── AnalyticsView.tsx   # Trend charts & analytics
+│   │   ├── ComplaintsView.tsx  # Citizen complaint system
+│   │   ├── EmergencyView.tsx   # Emergency management
+│   │   ├── WorkflowView.tsx    # Workflow automation
+│   │   ├── MapComponent.tsx    # Interactive city map
+│   │   └── MetricCard.tsx      # City metric widgets
+│   ├── data/                   # Static data and SOP documents
+│   ├── types.ts                # TypeScript type definitions
+│   ├── App.tsx                 # Root app component
+│   └── main.tsx                # React entry point
+├── .env.example                # Environment variables template
+├── .gitignore                  # Git ignore rules
+├── Dockerfile                  # Production container build
+├── cloudbuild.yaml             # Google Cloud Build pipeline
+├── package.json                # Node.js dependencies
+├── requirements.txt            # Python dependencies
+├── vite.config.ts              # Vite bundler config
+└── tsconfig.json               # TypeScript config
+```
+
+---
+
+## 🔑 Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `GEMINI_API_KEY` | Google AI Studio API key | Yes (local dev) |
+| `GOOGLE_CLOUD_PROJECT` | GCP project ID | Yes (cloud) |
+| `GOOGLE_CLOUD_REGION` | GCP region (default: `us-central1`) | No |
+| `FIRESTORE_DATABASE` | Firestore database ID | No |
+| `GCS_BUCKET_NAME` | Cloud Storage bucket for RAG docs | No |
+| `BIGQUERY_DATASET` | BigQuery dataset name | No |
+| `PUBSUB_TOPIC` | Pub/Sub topic for events | No |
+
+---
+
+## 🤖 AI Agent System
+
+CommunityOS uses a **multi-agent consensus architecture** powered by Gemini AI:
+
+| Agent | Responsibility |
+|-------|---------------|
+| 🚦 **Traffic Agent** | Congestion analysis, signal optimization recommendations |
+| 🌿 **Environment Agent** | Air quality, weather impact assessment |
+| 👥 **Citizen Agent** | Complaint classification, sentiment analysis |
+| 🏥 **Healthcare Agent** | Medical resource allocation, outbreak detection |
+| 🚨 **Emergency Agent** | Crisis severity scoring, dispatch coordination |
+| 📦 **Resource Agent** | City resource optimization and allocation |
+
+Each agent independently analyzes the city state and returns structured JSON recommendations. A **Master Coordinator** synthesizes the consensus for final decision output.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React 18, TypeScript, Tailwind CSS, Recharts, Leaflet |
+| **Backend** | Python FastAPI, Uvicorn, WebSockets |
+| **AI/ML** | Google Gemini AI, Vertex AI |
+| **Database** | Firestore (real-time), BigQuery (analytics) |
+| **Storage** | Cloud Storage (RAG documents) |
+| **Deployment** | Google Cloud Run, Cloud Build, Artifact Registry |
+| **Messaging** | Pub/Sub, Eventarc |
+
+---
+
+## 📸 Screenshots
+
+> Dashboard showing live city metrics, AI recommendations, and incident map
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+
+**Built with ❤️ using Google Cloud & Gemini AI**
+
+[🌐 Live Demo](https://smart-city-os-223349418431.us-central1.run.app) • [🐛 Report Bug](https://github.com/SivaPanyam/CommunityOS/issues) • [💡 Request Feature](https://github.com/SivaPanyam/CommunityOS/issues)
+
+</div>

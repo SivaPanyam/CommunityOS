@@ -43,170 +43,40 @@ import UtilitiesView from "./components/UtilitiesView";
 import SettingsView from "./components/SettingsView";
 import WorkflowModal from "./components/WorkflowModal";
 
+import { useCityStore } from "./store/useCityStore";
+import { useCityData } from "./hooks/useCityData";
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("dashboard");
-  const [viewLanding, setViewLanding] = useState(true);
-  const [theme, setTheme] = useState<SmartCityTheme>("glass-slate");
+  const { activeTab, viewLanding, theme, activeApprovedWorkflow, setActiveTab, setViewLanding, setTheme, setActiveApprovedWorkflow } = useCityStore();
+  const { data, isLoading, isWsReconnecting, triggerAction, addComplaint } = useCityData();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Core Smart City State
-  const [stats, setStats] = useState<any>({});
-  const [traffic, setTraffic] = useState<TrafficRecord[]>([]);
-  const [weather, setWeather] = useState<WeatherRecord[]>([]);
-  const [airQuality, setAirQuality] = useState<AQIRecord[]>([]);
-  const [complaints, setComplaints] = useState<ComplaintRecord[]>([]);
-  const [power, setPower] = useState<PowerRecord[]>([]);
-  const [water, setWater] = useState<WaterRecord[]>([]);
-  const [hospital, setHospital] = useState<HospitalRecord[]>([]);
-  const [emergency, setEmergency] = useState<EmergencyRecord[]>([]);
-  const [citizenFeedback, setCitizenFeedback] = useState<CitizenFeedbackRecord[]>([]);
+  // Fallbacks if data loading or failed
+  const stats = data?.stats || {};
+  const traffic = data?.traffic || [];
+  const weather = data?.weather || [];
+  const airQuality = data?.airQuality || [];
+  const complaints = data?.complaints || [];
+  const power = data?.power || [];
+  const water = data?.water || [];
+  const hospital = data?.hospital || [];
+  const emergency = data?.emergency || [];
+  const citizenFeedback = data?.citizenFeedback || [];
 
-  // Active Approved Workflow report modal
-  const [activeApprovedWorkflow, setActiveApprovedWorkflow] = useState<ApprovedAction | null>(null);
-
-  // Fetch all feeds on initialization
-  const fetchAllFeeds = async () => {
-    try {
-      const res = await fetch("/api/data/all");
-      if (res.ok) {
-        const contentType = res.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          console.warn("Express backend sync pending: Received non-JSON response from /api/data/all (server might still be starting up).");
-          return;
-        }
-        const data = await res.json();
-        setStats(data.stats);
-        setTraffic(data.traffic);
-        setWeather(data.weather);
-        setAirQuality(data.airQuality);
-        setComplaints(data.complaints);
-        setPower(data.power);
-        setWater(data.water);
-        setHospital(data.hospital);
-        setEmergency(data.emergency);
-        setCitizenFeedback(data.citizenFeedback);
-      } else {
-        console.warn(`Express backend sync pending: Server returned status ${res.status}`);
-      }
-    } catch (err) {
-      console.warn("Express backend sync pending (utilizing live client-side heuristics):", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllFeeds();
-
-    // Backup polling fallback every 10 seconds to ensure consistency if WebSocket fails
-    const pollInterval = setInterval(fetchAllFeeds, 10000);
-
-    // Setup active WebSocket connection to listen for real-time telemetry updates and dispatches
-    let ws: WebSocket | null = null;
-    let reconnectTimeout: any = null;
-
-    const connectWebSocket = () => {
-      try {
-        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-        const wsUrl = `${protocol}//${window.location.host}/ws`;
-        ws = new WebSocket(wsUrl);
-
-        ws.onopen = () => {
-          console.log("Connected to CommunityOS Real-Time Event Pipeline.");
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.event === "telemetry:update") {
-              const payload = data.payload;
-              if (payload.stats) setStats(payload.stats);
-              if (payload.traffic) setTraffic(payload.traffic);
-              if (payload.airQuality) setAirQuality(payload.airQuality);
-              if (payload.water) setWater(payload.water);
-              if (payload.complaints) setComplaints(payload.complaints);
-              if (payload.emergency) setEmergency(payload.emergency);
-            } else if (data.event === "complaint:created") {
-              const complaint = data.payload;
-              setComplaints((prev) => {
-                // Prevent duplicate addition
-                if (prev.some((c) => c.id === complaint.id)) return prev;
-                return [complaint, ...prev];
-              });
-            } else if (data.event === "workflow:approved") {
-              fetchAllFeeds();
-            }
-          } catch (err) {
-            console.error("Error parsing WebSocket event:", err);
-          }
-        };
-
-        ws.onclose = () => {
-          console.log("WebSocket connection closed. Attempting auto-reconnection in 5s...");
-          reconnectTimeout = setTimeout(connectWebSocket, 5000);
-        };
-
-        ws.onerror = (err) => {
-          console.warn("WebSocket status: Reconnecting to Real-Time Event Pipeline.");
-          ws?.close();
-        };
-      } catch (err) {
-        console.warn("WebSocket setup pending:", err);
-        reconnectTimeout = setTimeout(connectWebSocket, 5000);
-      }
-    };
-
-    connectWebSocket();
-
-    return () => {
-      clearInterval(pollInterval);
-      if (ws) {
-        ws.onclose = null; // Prevent reconnect trigger on manual cleanup
-        ws.close();
-      }
-      if (reconnectTimeout) {
-        clearTimeout(reconnectTimeout);
-      }
-    };
-  }, []);
-
-  // Action Approval trigger
   const handleTriggerAction = async (action: { id: string; title: string; department: string; sector: string; impactMetric: string }) => {
     try {
-      const res = await fetch("/api/workflows/approve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          actionId: action.id,
-          actionTitle: action.title,
-          department: action.department,
-          sector: action.sector,
-          impactMetric: action.impactMetric,
-        }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setActiveApprovedWorkflow(data.approvedItem);
-        // Instant refreshing of data states
-        await fetchAllFeeds();
+      const result = await triggerAction(action);
+      if (result && result.approvedItem) {
+        setActiveApprovedWorkflow(result.approvedItem);
       }
     } catch (err) {
       console.error("Action dispatch error:", err);
     }
   };
 
-  // Create citizen complaint trigger with auto-AI routing
   const handleAddComplaint = async (newComp: { title: string; description: string; location: string; imageUrl?: string }) => {
     try {
-      const res = await fetch("/api/complaints", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newComp),
-      });
-
-      if (res.ok) {
-        // Refresh feeds to pull the newly routed complaint and notification
-        await fetchAllFeeds();
-      }
+      await addComplaint(newComp);
     } catch (err) {
       console.error("Error creating complaint:", err);
     }

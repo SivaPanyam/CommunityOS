@@ -118,9 +118,9 @@ export default function DashboardView({
     <div className="space-y-6">
       
       {/* Top Welcome Title Banner */}
-      <div className="relative overflow-hidden p-6 bg-gradient-to-r from-slate-950 via-slate-900/80 to-slate-950 rounded-2xl border border-slate-800/80 backdrop-blur-xl shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="relative overflow-hidden p-6 gcp-glass rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Glowing visual flair */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full filter blur-2xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full filter blur-2xl pointer-events-none" />
         
         <div>
           <div className="flex items-center gap-2">
@@ -207,7 +207,7 @@ export default function DashboardView({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         {/* Financial ROI Card */}
-        <div className="p-4 bg-gradient-to-br from-slate-900/60 to-slate-950/40 rounded-2xl border border-slate-800/80 shadow-md flex items-center gap-4">
+        <div className="p-4 gcp-glass gcp-glass-hover rounded-2xl flex items-center gap-4">
           <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0">
             <TrendingUp className="w-5 h-5" />
           </div>
@@ -228,7 +228,7 @@ export default function DashboardView({
         </div>
 
         {/* Public Trust Index Card */}
-        <div className="p-4 bg-gradient-to-br from-slate-900/60 to-slate-950/40 rounded-2xl border border-slate-800/80 shadow-md flex items-center gap-4">
+        <div className="p-4 gcp-glass gcp-glass-hover rounded-2xl flex items-center gap-4">
           <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 shrink-0">
             <Heart className="w-5 h-5" />
           </div>
@@ -249,7 +249,7 @@ export default function DashboardView({
         </div>
 
         {/* GCP Cloud Infrastructure Card */}
-        <div className="p-4 bg-gradient-to-br from-slate-900/60 to-slate-950/40 rounded-2xl border border-slate-800/80 shadow-md flex items-center gap-4">
+        <div className="p-4 gcp-glass gcp-glass-hover rounded-2xl flex items-center gap-4">
           <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shrink-0">
             <Database className="w-5 h-5" />
           </div>
@@ -304,7 +304,7 @@ export default function DashboardView({
         </div>
 
         {/* AI Operational Recommendation Panel with Explainable AI & Confidence Gauge (4 Columns) */}
-        <div className="lg:col-span-4 flex flex-col justify-between p-5 bg-gradient-to-br from-slate-900 to-slate-950 rounded-2xl border border-slate-800 shadow-2xl min-h-[410px]">
+        <div className="lg:col-span-4 flex flex-col justify-between p-5 gcp-glass rounded-2xl min-h-[410px]">
           <div>
             <div className="flex items-center justify-between mb-3.5">
               <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">

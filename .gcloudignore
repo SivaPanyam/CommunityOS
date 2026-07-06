@@ -1,0 +1,16 @@
+# Ignore node_modules and virtual environments in gcloud uploads
+.gcloudignore
+.git
+.gitignore
+node_modules/
+venv/
+.pytest_cache/
+*.db
+backend/tests/
+run_tests.*
+gcp-bootstrap.*
+cloudbuild.yaml
+docker-compose.yml
+deploy.sh
+setup.*
+start.*

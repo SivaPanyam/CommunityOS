@@ -23,3 +23,29 @@ pip-delete-this-directory.txt
 src/data/rag_uploads/
 src/data/rag_vector_db.json
 src/data/local_gcs_fallback/
+
+# Test caches
+.pytest_cache/
+*.db
+
+# OS artifacts
+Thumbs.db
+
+# Extra Dockerfiles (only root Dockerfile used)
+Dockerfile.frontend
+Dockerfile.node
+Dockerfile.python
+
+# Bootstrap/setup scripts (cloud deployment handled via cloudbuild.yaml)
+gcp-bootstrap.ps1
+gcp-bootstrap.sh
+setup.ps1
+setup.sh
+start.ps1
+start.sh
+run_tests.ps1
+run_tests.sh
+deploy.sh
+
+# Assets folder (build artifacts)
+assets/
