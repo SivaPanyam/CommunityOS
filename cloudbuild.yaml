@@ -1,0 +1,49 @@
+steps:
+  # 1. Build the multi-stage Docker image for the Node.js backend
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '--target', 'node-runner',
+      '-t', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/${_SERVICE_NAME}:${COMMIT_SHA}',
+      '.'
+    ]
+    id: 'Build Container Image'
+
+  # 2. Push the built image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/${_SERVICE_NAME}:${COMMIT_SHA}'
+    ]
+    id: 'Push Image to Registry'
+
+  # 3. Deploy the container to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: [
+      'run', 'deploy', '${_SERVICE_NAME}',
+      '--image', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/${_SERVICE_NAME}:${COMMIT_SHA}',
+      '--region', '${_REGION}',
+      '--platform', 'managed',
+      '--allow-unauthenticated',
+      '--port', '3000',
+      '--memory', '2Gi',
+      '--cpu', '2',
+      '--min-instances', '0',
+      '--max-instances', '10',
+      '--set-env-vars', 'NODE_ENV=production,ENV_MODE=production',
+      # Bind secret version if necessary, otherwise loaded dynamically via getSecret() in gcp.ts
+      '--update-secrets', 'GEMINI_API_KEY=GEMINI_API_KEY:latest'
+    ]
+    id: 'Deploy to Cloud Run'
+
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/${_SERVICE_NAME}:${COMMIT_SHA}'
+
+substitutions:
+  _REGION: 'asia-southeast1'
+  _AR_REPO: 'smart-city-apps'
+  _SERVICE_NAME: 'smart-city-os'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

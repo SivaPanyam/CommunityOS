@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: communityos-backend-python
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+
+  backend-node:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: communityos-backend-node
+    ports:
+      - "3000:3000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: communityos-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - USE_PYTHON_BACKEND=true
+      - VITE_BACKEND_URL=http://backend-python:8000
+    depends_on:
+      - backend-python
+      - backend-node

@@ -1,0 +1,6 @@
+{
+  "name": "CommunityOS",
+  "description": "The AI Operating System for Smart Communities - predictive analytics, multi-agent reasoning, smart utilities, and emergency automation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
